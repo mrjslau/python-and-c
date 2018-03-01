@@ -1,5 +1,6 @@
 #include <Python.h>
 
+//max (46). overflow
 static int get_fibonacci(int x){
   int a = 1;
   int b = 1;
@@ -60,4 +61,14 @@ static struct PyModuleDef spammodule = {
 
 PyMODINIT_FUNC PyInit_spam (void){
   return PyModule_Create (&spammodule);
+}
+
+static PyObject *spamError;
+
+PyMODINIT_FUNC PyInit_spam(void){
+  PyObject *m = PyModule_Create(&spammodule);
+  
+  spamError = PyErr_NewException("spam.error", NULL, NULL);
+  Py_INCREF(spamError);
+  PyModule_AddObject(m, "error", spamError);
 }
