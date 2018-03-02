@@ -2,6 +2,18 @@
 
 static PyObject *spamError;
 
+static int get_fibonacci(int x){
+  int a = 1;
+  int b = 1;
+  for(int i = 2; i < x; i++){
+    if(i % 2 == 0)
+      b += a;
+    else
+      a += b;
+  }
+  return a > b ? a : b;
+}
+
 // Terminal function
 // ----------------------------- module --------- params ------- //
 static PyObject * spam_system(PyObject *self, PyObject *args){
@@ -13,7 +25,7 @@ static PyObject * spam_system(PyObject *self, PyObject *args){
 // Assigns result of function
   sts = system(command);
   if(sts<0){
-    //PyErr_SetString(spamError, "System command failed");
+    PyErr_SetString(spamError, "System command failed");
     return NULL;
   }
 // Converts back to Python object ("i" integer type) and returns
@@ -43,7 +55,7 @@ static PyObject * spam_fibonacci(PyObject *self, PyObject *args){
 // Method list
 static PyMethodDef spamMethods[] = {
 // PythonName   - C function name - Args flag   -  Description
-  {"system",      pam_system,       METH_VARARGS, "Execute a shell command."},
+  {"system",      spam_system,      METH_VARARGS, "Execute a shell command."},
   {"multiply",    spam_multiply,    METH_VARARGS, "Multiply two integers"},
   {"fibonacci",   spam_fibonacci,   METH_VARARGS, "Get n-row fibonacci number (Max 46)"},
   {NULL,          NULL,             0,            NULL} /* Sentinel */
@@ -52,29 +64,11 @@ static PyMethodDef spamMethods[] = {
 static struct PyModuleDef spammodule = {
   PyModuleDef_HEAD_INIT,
   "spam", // name of module
-  NULL, // module documentation
-  -1, // size of per-interpreter state
+  NULL,   // module documentation
+  -1,     // size of per-interpreter state
   spamMethods
 };
 
 PyMODINIT_FUNC PyInit_spam(void){
-  PyObject *m = PyModule_Create(&spammodule);
-  if (m == NULL) return
-
-  spamError = PyErr_NewException("spam.error", NULL, NULL);
-  Py_INCREF(spamError);
-  PyModule_AddObject(m, "error", spamError);
-}
-
-// C functions
-static int get_fibonacci(int x){
-  int a = 1;
-  int b = 1;
-  for(int i = 2; i < x; i++){
-    if(i % 2 == 0)
-      b += a;
-    else
-      a += b;
-  }
-  return a > b ? a : b;
+  return PyModule_Create(&spammodule);
 }
