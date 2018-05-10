@@ -1,4 +1,9 @@
 from distutils.core import setup, Extension
-MOD = "spam"
-module = Extension(MOD, sources = ["spammodule.c"])
-setup(name = MOD, ext_modules = [module])
+MODN = "noddy"
+MODS = "spam"
+
+moduleNoddy = Extension(MODN, sources = ["noddymodule.c"])
+setup(name = MODN, ext_modules = [moduleNoddy])
+
+moduleSpam = Extension(MODS, sources = ["spammodule.c"])
+setup(name = MODS, ext_modules = [moduleSpam])
