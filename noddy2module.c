@@ -137,9 +137,9 @@ static PyMethodDef module_methods[] = {
 #endif
 PyMODINIT_FUNC initnoddy2(void) {
   PyObject* m;
-  if (PyType_Ready(&NoddyType) < 0) return;
+  if (PyType_Ready(&NoddyType) < 0) return NULL;
   m = Py_InitModule3("noddy2", module_methods, "Example module that creates an extension type.");
-  if (m == NULL) return;
+  if (m == NULL) return NULL;
   Py_INCREF(&NoddyType);
   PyModule_AddObject(m, "Noddy", (PyObject *)&NoddyType);
 }
